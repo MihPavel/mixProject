@@ -9,6 +9,16 @@ class testSpace extends Component{
           <HoverSpace>
             <SimpleElement/>
             <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
+            <SimpleElement/>
           </HoverSpace>
         </div>
     );

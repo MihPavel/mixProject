@@ -1,22 +1,32 @@
 import React, {Component} from 'react'
 
-export default (OriginalClass) => class ToggleOpen extends Component{
+const styleSelect = {
+  background: "white",
+};
+const styleDefault = { 
+  border: "none"
+};
+
+export default class ToggleOpen extends Component{
   state = {
     isSelect: false
   }
+  componentWillReceiveProps = (props) => {
+    this.setState({
+      isSelect: this.props.defaultSelect
+    });
+  }
   toggleSelect = () => {
-    console.log("click");
     this.setState({
       isSelect: !this.state.isSelect
     });
   }
   render(){
-    const select = {
-      border: "1px solid black"
-    };
-    let addStyle = this.state.isSelect ? select : { border: "none"};
+    let style = this.state.isSelect ? styleSelect : styleDefault;
     return(
-      <OriginalClass style = {addStyle}  {...this.props} {...this.state} onclick = {this.toggleSelect}/>
+      <span style = {style} onClick = {this.toggleSelect}>
+        {this.props.children}
+      </span>
     )
   }
 }
