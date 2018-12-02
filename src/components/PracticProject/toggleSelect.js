@@ -11,9 +11,11 @@ export default class ToggleOpen extends Component{
   state = {
     isSelect: false
   }
+  
   componentWillReceiveProps = (props) => {
+    
     this.setState({
-      isSelect: this.props.defaultSelect
+      isSelect: props.defaultSelect
     });
   }
   toggleSelect = () => {
@@ -21,7 +23,11 @@ export default class ToggleOpen extends Component{
       isSelect: !this.state.isSelect
     });
   }
+  cons(){
+    console.log("toggleSelect");
+  }
   render(){
+    this.cons();
     let style = this.state.isSelect ? styleSelect : styleDefault;
     return(
       <span style = {style} onClick = {this.toggleSelect}>

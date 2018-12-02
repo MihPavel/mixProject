@@ -6,6 +6,5 @@ export function arrToMap(arr, DataRecord = Map){
     , new OrderedMap({}));
 }
 export function mapToArr(obj){
-  console.log(obj);
   return obj.valueSeq().toArray();
 }

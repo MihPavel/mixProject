@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import ToggleSelect from './toggleSelect';
+import RenderChildren from './renderChildren';
+
 const styleSpace = {
   height: "500px",
   width: "200px",
@@ -14,27 +15,32 @@ const styleSelectSpace = {
 }
 
 class HoverSpace extends Component{
-  state = {
-    onSelect: false,
-    startPoint: {},
-    endPoint: {},
-    childrenData: []
-  }
+  constructor(props) {
+    super(props);
 
-  onSelectStart = (ev) => {
-    const allChildren = ev.target.children;
-    
-    const elements = [].slice.call(allChildren, 0, allChildren.length - 1);
-    
-    const childrenData = elements.map((el) => {
+    this.state = { 
+      onSelect: false,
+      startPoint: {},
+      endPoint: {},
+      childrenData: [],
+      childrenComponents: props.children
+    };
+  }
+  onRenderedChildren = (massChildren) => {
+    const childrenData = massChildren.map((el) => {
       return {
         childBound: el.getBoundingClientRect(),
         selected: false
       }
     });
+    this.setState({ childrenData: childrenData });
+  }
+
+  onSelectStart = (ev) => {
+    if(!ev.target.firstElementChild) return;
+
     this.setState({
       onSelect: true,
-      childrenData: childrenData,
       startPoint: {
         x: ev.pageX,
         y: ev.pageY
@@ -100,12 +106,13 @@ class HoverSpace extends Component{
       } 
     });
 
-    if(changeHappened){
+    if(changeHappened) {
+      console.log("setstatemove");
       this.setState({ 
         endPoint,
         childrenData: newChildrenState
        });
-    }else{
+    } else {
       this.setState({ 
         endPoint
       });
@@ -121,20 +128,20 @@ class HoverSpace extends Component{
 
     return Object.assign({}, styleSelectSpace, { left, top, height, width })
   }
+  cons(){
+    console.log("hoverSpace");
+  }
+  
   render(){
-    let {endPoint, startPoint, childrenData} = this.state;
-    
+    this.cons();
+    let {endPoint, startPoint, childrenData, childrenComponents} = this.state;
+  
     let styles = this.calculateStylesSelectSpace(endPoint, startPoint); 
-
-    const childrenWithSelect = React.Children.map(this.props.children, (child, index) => {
-      let defaultSelect = !childrenData.length ? false : childrenData[index].selected;
-      
-      return <ToggleSelect defaultSelect = { defaultSelect }> { child } </ToggleSelect>
-    });
-
     return(
         <div style={styleSpace} onMouseDown={this.onSelectStart} onMouseUp={this.onSelectEnd} onMouseMove={this.onSelectMove}>
-          {childrenWithSelect}
+          <RenderChildren sendChildren = {this.onRenderedChildren}
+                          childrenComponents = {childrenComponents}
+                          childrenData = {childrenData}/>
           <div style={styles}></div>
         </div>
     );
