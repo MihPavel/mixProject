@@ -8,7 +8,6 @@ const style = {
   marginTop: "20px"
 }
 class SimpleElement extends Component{
-
   render(){
     return(
       <p style={style}>Элемент</p>

@@ -14,11 +14,6 @@ class testSpace extends Component{
             <SimpleElement/>
             <SimpleElement/>
             <SimpleElement/>
-            <SimpleElement/>
-            <SimpleElement/>
-            <SimpleElement/>
-            <SimpleElement/>
-            <SimpleElement/>
           </HoverSpace>
         </div>
     );

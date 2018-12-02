@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ToggleSelect from './toggleSelect';
 const styleSpace = {
-  height: "300px",
+  height: "500px",
   width: "200px",
   padding: "20px",
   background: "skyblue"
@@ -49,7 +49,8 @@ class HoverSpace extends Component{
     });
   }
   onSelectMove = (ev) =>{
-    
+    let changeHappened = false;
+
     let {childrenData, onSelect, startPoint} = this.state;
 
     let endPoint = { 
@@ -59,6 +60,7 @@ class HoverSpace extends Component{
     
     if(!onSelect) return;
 
+    let newChildrenState = childrenData.slice();
     childrenData.forEach((childData, currentIndex) => {
       let childBound = childData.childBound;
 
@@ -84,26 +86,30 @@ class HoverSpace extends Component{
       
       let heigthEnclosingSquare = enclosingSquareBottom - enclosingSquareTop;
       let widthEnclosingSquare = enclosingSquareRight - enclosingSquareLeft;
+      
       if((heigthEnclosingSquare - heightSelectedArea - childBound.height) < 0 && (widthEnclosingSquare - widthSelectedArea - childBound.width) < 0){
-        
-        if(!childData.selected){
-          let newChildrenState = childrenData.slice();
+        if(!childData.selected) {
           newChildrenState[currentIndex].selected = true;
-  
-          this.setState({
-            childrenData: newChildrenState
-          });
+          changeHappened = true;
         }
       } else {
-        let newChildrenState = childrenData.slice();
-        newChildrenState[currentIndex].selected = false;
-
-        this.setState({
-          childrenData: newChildrenState
-        });
+        if(childData.selected) {
+          changeHappened = true;
+          newChildrenState[currentIndex].selected = false;
+        }
       } 
     });
-    this.setState({ endPoint });
+
+    if(changeHappened){
+      this.setState({ 
+        endPoint,
+        childrenData: newChildrenState
+       });
+    }else{
+      this.setState({ 
+        endPoint
+      });
+    }
   }
   calculateStylesSelectSpace(endPoint, startPoint){
     if(!this.state.onSelect) return styleSelectSpace;
